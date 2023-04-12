@@ -609,3 +609,5 @@ class Ui_MainWindow(object):
         self.colorButton_5.setStyleSheet('background-color: rgb(0, 255, 255); ')
         self.colorButton_6.setStyleSheet('background-color: rgb(0, 128, 0); ')
         self.colorButton_7.setStyleSheet('background-color: rgb(255, 0, 0); ')
+        self.canvas_3.setStyleSheet('background-color: rgb(0, 128, 0); ')
+        self.canvas_7.setStyleSheet('background-color: rgb(0, 128, 0); ')
