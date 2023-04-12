@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
-from PyQt5.QtGui import QPainter, QPen, QBrush, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
+from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QPixmap
 from PyQt5.QtCore import Qt, QRectF, QSizeF
 from pyui.design_2 import Ui_MainWindow
+from PIL import Image
 import sys
 
 
@@ -68,9 +69,10 @@ class App(QMainWindow, Ui_MainWindow):
         self.gridLayout_4.addWidget(self.draw_objects)
         self.gridLayout_2.addWidget(self.draw_def)
 
-        self.pushButton_3.clicked.connect(lambda: self.draw_objects.save_as_image('photo.png'))
+        # self.pushButton_3.clicked.connect(lambda: self.draw_objects.save_as_image('photo_obj_1.png'))
         self.pushButton.clicked.connect(self.clear_objects)
         self.pushButton_2.clicked.connect(self.clear_defects)
+        self.pushButton_30.clicked.connect(self.upload_photo)
 
         self.colorButton_3.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 128, 0)))
         self.colorButton_2.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 0, 255)))
@@ -95,6 +97,13 @@ class App(QMainWindow, Ui_MainWindow):
                 child.widget().deleteLater()
         self.draw_def = Drawing(QColor(0, 128, 0))
         self.gridLayout_2.addWidget(self.draw_def)
+
+    def upload_photo(self):
+        filename = QFileDialog.getOpenFileNames(self, "Выбрать изображение", "",
+                                                'Изображение (*.jpg *.png);')[0][0]
+        image = Image.open(filename).resize((512, 64))
+        image.save('image_start.png')
+        self.canvas_8.setPixmap(QPixmap('image_start.png'))
 
 
 def except_hook(cls, exception, traceback):
