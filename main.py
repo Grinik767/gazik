@@ -99,11 +99,14 @@ class App(QMainWindow, Ui_MainWindow):
         self.gridLayout_2.addWidget(self.draw_def)
 
     def upload_photo(self):
-        filename = QFileDialog.getOpenFileNames(self, "Выбрать изображение", "",
-                                                'Изображение (*.jpg *.png);')[0][0]
-        image = Image.open(filename).resize((512, 64))
-        image.save('image_start.png')
-        self.canvas_8.setPixmap(QPixmap('image_start.png'))
+        try:
+            filename = QFileDialog.getOpenFileNames(self, "Выбрать изображение", "",
+                                                    'Изображение (*.jpg *.png);')[0][0]
+            image = Image.open(filename).resize((512, 64))
+            image.save('image_start.png')
+            self.canvas_8.setPixmap(QPixmap('image_start.png'))
+        except Exception as E:
+            pass
 
 
 def except_hook(cls, exception, traceback):
