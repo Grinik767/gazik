@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QPixmap
 from PyQt5.QtCore import Qt, QRectF, QSizeF
-from pyui.design_2 import Ui_MainWindow
+from pyui.test_4 import Ui_MainWindow
 from PIL import Image
 import sys
 import os
@@ -17,7 +17,7 @@ class Drawing(QWidget):
         self.color_to_save = color
         self.brush = QBrush(self.color)
         self.filled_rectangles = [
-            [QRectF(self.pos(), QSizeF(self.x() + self.width(), self.y() + self.height())), self.brush.color()]]
+            [QRectF(self.pos(), QSizeF(self.x() + 1025, self.y() + 65)), self.brush.color()]]
         self.setMouseTracking(True)
 
     def paintEvent(self, event):
@@ -106,7 +106,7 @@ class App(QMainWindow, Ui_MainWindow):
         try:
             filename = QFileDialog.getOpenFileNames(self, "Выбрать изображение", "",
                                                     'Изображение (*.jpg *.png);')[0][0]
-            image = Image.open(filename).resize((512, 64))
+            image = Image.open(filename).resize((1024, 64))
             image.save('image_start.png')
             self.canvas_8.setPixmap(QPixmap('image_start.png'))
         except Exception as E:
@@ -124,11 +124,11 @@ class App(QMainWindow, Ui_MainWindow):
             image_obj = Image.open(f'objects_1.{type_of_f}')
             image_def = Image.open(f'defects_1.{type_of_f}')
             image_start = Image.open(f'image_start.png')
-            image_start_size = image_start.size
-            new_image = Image.new('RGB', (image_start_size[0], 3 * image_start_size[1]), (255, 255, 255))
+            image_object_size = image_obj.size
+            new_image = Image.new('RGB', (image_object_size[0], 3 * image_object_size[1] + 3), (255, 255, 255))
             new_image.paste(image_start, (0, 0))
-            new_image.paste(image_obj, (0, image_start_size[1]))
-            new_image.paste(image_def, (0, 2 * image_start_size[1]))
+            new_image.paste(image_obj, (0, image_object_size[1] + 1))
+            new_image.paste(image_def, (0, 2 * image_object_size[1] + 2))
             new_image.save(filename)
             new_image.show()
             os.remove(f'objects_1.{type_of_f}')
