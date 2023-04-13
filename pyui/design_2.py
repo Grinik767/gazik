@@ -253,7 +253,8 @@ class Ui_MainWindow(object):
         self.pushButton_4.setObjectName("pushButton_4")
         self.canvas_3 = QtWidgets.QLabel(self.tab)
         self.canvas_3.setGeometry(QtCore.QRect(130, 480, 512, 64))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas_3.sizePolicy().hasHeightForWidth())
@@ -270,7 +271,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.canvas_7 = QtWidgets.QLabel(self.tab)
         self.canvas_7.setGeometry(QtCore.QRect(130, 290, 512, 64))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas_7.sizePolicy().hasHeightForWidth())
@@ -287,7 +289,8 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.canvas_8 = QtWidgets.QLabel(self.tab)
         self.canvas_8.setGeometry(QtCore.QRect(130, 100, 512, 64))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas_8.sizePolicy().hasHeightForWidth())
@@ -333,7 +336,8 @@ class Ui_MainWindow(object):
         self.label_90.setObjectName("label_90")
         self.canvas_4 = QtWidgets.QLabel(self.tab_2)
         self.canvas_4.setGeometry(QtCore.QRect(120, 290, 512, 64))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas_4.sizePolicy().hasHeightForWidth())
@@ -368,7 +372,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.addWidget(self.pushButton_10)
         self.canvas_5 = QtWidgets.QLabel(self.tab_2)
         self.canvas_5.setGeometry(QtCore.QRect(120, 480, 512, 64))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas_5.sizePolicy().hasHeightForWidth())
@@ -382,7 +387,8 @@ class Ui_MainWindow(object):
         self.pushButton_11.setObjectName("pushButton_11")
         self.canvas_6 = QtWidgets.QLabel(self.tab_2)
         self.canvas_6.setGeometry(QtCore.QRect(120, 110, 512, 64))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,
+                                           QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.canvas_6.sizePolicy().hasHeightForWidth())
@@ -583,7 +589,8 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Разметка объектов"))
         self.label_4.setText(_translate("MainWindow", "Разметка дефектов"))
         self.pushButton_4.setText(_translate("MainWindow", "Получить ответ от нейронной сети"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Разметка новых магнитограмм"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab),
+                                  _translate("MainWindow", "Разметка новых магнитограмм"))
         self.label_2.setText(_translate("MainWindow", "Практика"))
         self.pushButton_31.setText(_translate("MainWindow", "Выбрать задание"))
         self.label_90.setText(_translate("MainWindow", "Файл не выбран"))
@@ -609,5 +616,3 @@ class Ui_MainWindow(object):
         self.colorButton_5.setStyleSheet('background-color: rgb(0, 255, 255); ')
         self.colorButton_6.setStyleSheet('background-color: rgb(0, 128, 0); ')
         self.colorButton_7.setStyleSheet('background-color: rgb(255, 0, 0); ')
-        self.canvas_3.setStyleSheet('background-color: rgb(0, 128, 0); ')
-        self.canvas_7.setStyleSheet('background-color: rgb(0, 128, 0); ')
