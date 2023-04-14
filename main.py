@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QPixmap
-from PyQt5.QtCore import Qt, QRectF, QSizeF, QPoint
+from PyQt5.QtCore import Qt, QRectF, QSizeF, QEvent
 from pyui.test_4 import Ui_MainWindow
 from pyui.neuro_1 import Ui_MainWindow_n
 from PIL import Image
@@ -187,7 +187,7 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
         self.img = img
         self.get_result()
 
-    def get_result(self):
+    def get_result(self, to_view=True):
         modelUnet = unet(num_classes, (img_height // 8, img_width // 8, 3))
         modelUnet.load_weights('Model_UNET_elem.h5')
         modelPsPnet = pspnet(num_classes_def, (img_height // 8, img_width // 8, 3))
@@ -199,21 +199,26 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
                                                                                                                num_classes)
         predict_def = np.array(modelPsPnet.predict(x.reshape(1, img_height // 8, img_width // 8, 3)))[0].reshape(-1,
                                                                                                                  num_classes_def)
-        pr1 = []
-        pr2 = []
-        for k in range(len(predict_obj)):
-            pr1.append(index2color(predict_obj[k]))
-            pr2.append(index2color_def(predict_def[k]))
-        pr1 = np.array(pr1)
-        pr2 = np.array(pr2)
-        pr1 = pr1.reshape(img_height // 8, img_width // 8, 3)
-        pr2 = pr2.reshape(img_height // 8, img_width // 8, 3)
-        res_obj = Image.fromarray(pr1.astype('uint8')).resize((1024, 64))
-        res_obj.save('image_neuro_obj.png')
-        res_def = Image.fromarray(pr2.astype('uint8')).resize((1024, 64))
-        res_def.save('image_neuro_def.png')
-        self.canvas_7.setPixmap(QPixmap('image_neuro_obj.png'))
-        self.canvas_8.setPixmap(QPixmap('image_neuro_def.png'))
+        if to_view:
+            pr1 = []
+            pr2 = []
+            for k in range(len(predict_obj)):
+                pr1.append(index2color(predict_obj[k]))
+                pr2.append(index2color_def(predict_def[k]))
+            self.view_result(pr1, objects=True)
+            self.view_result(pr2, objects=False)
+        else:
+            return predict_obj, predict_def
+
+    def view_result(self, result: list, objects: bool):
+        result = np.array(result).reshape(img_height // 8, img_width // 8, 3)
+        res = Image.fromarray(result.astype('uint8')).resize((1024, 64))
+        if objects:
+            res.save('image_neuro_obj.png')
+            self.canvas_7.setPixmap(QPixmap('image_neuro_obj.png'))
+        else:
+            res.save('image_neuro_def.png')
+            self.canvas_8.setPixmap(QPixmap('image_neuro_def.png'))
 
     def copy_objects(self):
         ex.paste_objects()
@@ -221,9 +226,45 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
     def copy_defects(self):
         ex.paste_defects()
 
-    def closeEvent(self, event):
-        os.remove('image_neuro_obj.png')
-        os.remove('image_neuro_def.png')
+    def count_overlap(self):
+        '''objects, defects = self.get_result(to_view=False)
+        objects1 = []
+        defects1 = []
+        for k in range(len(objects)):
+            objects1.append(np.argmax(objects[k]))
+            defects1.append(np.argmax(defects[k]))
+        objects, defects = np.array(objects1).reshape(img_height // 8, img_width // 8), np.array(defects1).reshape(
+            img_height // 8, img_width // 8)
+        ex.draw_objects.save_as_image('objects_1.png')
+        img_obj = yt_prep([Image.open('objects_1.png').convert('RGB').resize((1024, 64))], num_classes).reshape(-1,
+                                                                                                                num_classes)
+        res1_1 = []
+        res2_1 = []
+        for i in range(len(img_obj)):
+            res1_1.append(np.argmax(img_obj[i]))
+        res1_1 = np.array(res1_1)
+        res1_1 = res1_1.reshape(img_height // 2, img_width // 4)
+        res1 = []
+        res2 = []
+        for i in range(img_width // 8):
+            res1 += ([np.argmax(np.bincount(objects[:, i]))] * 8)
+            res2 += ([np.argmax(np.bincount(defects[:, i]))] * 8)
+        res1_2 = []
+        for i in range(img_width // 4):
+            res1_2 += ([np.argmax(np.bincount(res1_1[:, i]))] * 4)
+        k_def = 0
+        for i in range(img_width):
+            if res1[i] == res1_2[i]:
+                k_def += 1
+        print(k_def / 4096 * 100)'''
+
+    def event(self, event):
+        if event.type() == QEvent.WindowActivate:
+            pass
+        elif event.type() == QEvent.Close:
+            os.remove('image_neuro_obj.png')
+            os.remove('image_neuro_def.png')
+        return QMainWindow.event(self, event)
 
 
 def except_hook(cls, exception, traceback):
