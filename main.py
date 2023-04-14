@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QPixmap
-from PyQt5.QtCore import Qt, QRectF, QSizeF
+from PyQt5.QtCore import Qt, QRectF, QSizeF, QPoint
 from pyui.test_4 import Ui_MainWindow
 from pyui.neuro_1 import Ui_MainWindow_n
 from PIL import Image
@@ -16,6 +16,7 @@ class Drawing(QWidget):
         super().__init__()
 
         self.current_rectangle = None
+        self.have_copy = None
 
         self.color = color
         self.color_to_save = color
@@ -28,11 +29,17 @@ class Drawing(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setPen(QPen(Qt.NoPen))
-
+        if self.have_copy:
+            self.filled_rectangles.append([self.have_copy, self.brush.color()])
+            self.have_copy = None
         for rectangle, color in self.filled_rectangles:
             self.brush.setColor(color)
-            painter.fillRect(rectangle, self.brush)
-            painter.drawRect(rectangle)
+            if rectangle.__class__.__name__ == 'QPixmap':
+                painter.drawPixmap(0, 0, rectangle)
+            else:
+                painter.fillRect(rectangle, self.brush)
+                painter.drawRect(rectangle)
+
         self.brush.setColor(self.color_to_save)
         if self.current_rectangle is not None:
             painter.fillRect(self.current_rectangle, self.brush)
@@ -65,6 +72,9 @@ class Drawing(QWidget):
     def save_as_image(self, filename):
         pixmap = self.grab()
         pixmap.save(filename)
+
+    def paste_image(self, filename):
+        self.have_copy = QPixmap(filename)
 
 
 class App(QMainWindow, Ui_MainWindow):
@@ -152,6 +162,12 @@ class App(QMainWindow, Ui_MainWindow):
             self.adm = Neuro(img)
             self.adm.show()
 
+    def paste_objects(self):
+        self.draw_objects.paste_image('image_neuro_obj.png')
+
+    def paste_defects(self):
+        self.draw_def.paste_image('image_neuro_def.png')
+
     def closeEvent(self, event):
         if self.have_photo:
             os.remove('image_start.png')
@@ -164,6 +180,10 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
     def __init__(self, img):
         super().__init__()
         self.setupUi(self)
+
+        self.pushButton_4.clicked.connect(self.copy_objects)
+        self.pushButton_5.clicked.connect(self.copy_defects)
+
         self.img = img
         self.get_result()
 
@@ -194,6 +214,12 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
         res_def.save('image_neuro_def.png')
         self.canvas_7.setPixmap(QPixmap('image_neuro_obj.png'))
         self.canvas_8.setPixmap(QPixmap('image_neuro_def.png'))
+
+    def copy_objects(self):
+        ex.paste_objects()
+
+    def copy_defects(self):
+        ex.paste_defects()
 
     def closeEvent(self, event):
         os.remove('image_neuro_obj.png')
