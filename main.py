@@ -100,6 +100,7 @@ class App(QMainWindow, Ui_MainWindow):
         self.pushButton_30.clicked.connect(self.upload_photo)
         self.pushButton_31.clicked.connect(self.choose_task)
         self.pushButton_4.clicked.connect(self.get_from_neuro)
+        self.pushButton_11.clicked.connect(self.get_from_neuro_pr)
 
         self.colorButton_3.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 128, 0)))
         self.colorButton_2.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 0, 255)))
@@ -135,7 +136,7 @@ class App(QMainWindow, Ui_MainWindow):
             self.gridLayout_2.addWidget(self.draw_def)
 
     def clear_objects_pr(self):
-        if self.have_photo:
+        if self.have_pr:
             while self.gridLayout_8.count():
                 child = self.gridLayout_8.takeAt(0)
                 if child.widget():
@@ -144,7 +145,7 @@ class App(QMainWindow, Ui_MainWindow):
             self.gridLayout_8.addWidget(self.draw_objects_pr)
 
     def clear_defects_pr(self):
-        if self.have_photo:
+        if self.have_pr:
             while self.gridLayout_3.count():
                 child = self.gridLayout_3.takeAt(0)
                 if child.widget():
@@ -209,11 +210,23 @@ class App(QMainWindow, Ui_MainWindow):
             self.adm = Neuro(img)
             self.adm.show()
 
-    def paste_objects(self):
-        self.draw_objects.paste_image('image_neuro_obj.png')
+    def get_from_neuro_pr(self):
+        if self.have_pr:
+            img = image.load_img('image_start_pr.png', target_size=(img_height // 8, img_width // 8))
+            self.adm = Neuro(img, pr=True)
+            self.adm.show()
 
-    def paste_defects(self):
-        self.draw_def.paste_image('image_neuro_def.png')
+    def paste_objects(self, pr: bool):
+        if pr:
+            self.draw_objects_pr.paste_image('image_neuro_obj_pr.png')
+        else:
+            self.draw_objects.paste_image('image_neuro_obj.png')
+
+    def paste_defects(self, pr: bool):
+        if pr:
+            self.draw_def_pr.paste_image('image_neuro_def_pr.png')
+        else:
+            self.draw_def.paste_image('image_neuro_def.png')
 
     def closeEvent(self, event):
         if self.have_photo:
@@ -226,13 +239,14 @@ class App(QMainWindow, Ui_MainWindow):
 
 
 class Neuro(QMainWindow, Ui_MainWindow_n):
-    def __init__(self, img):
+    def __init__(self, img, pr=False):
         super().__init__()
         self.setupUi(self)
 
         self.pushButton_4.clicked.connect(self.copy_objects)
         self.pushButton_5.clicked.connect(self.copy_defects)
 
+        self.pr = pr
         self.img = img
         self.get_result()
 
@@ -263,17 +277,25 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
         result = np.array(result).reshape(img_height // 8, img_width // 8, 3)
         res = Image.fromarray(result.astype('uint8')).resize((1024, 64))
         if objects:
-            res.save('image_neuro_obj.png')
-            self.canvas_7.setPixmap(QPixmap('image_neuro_obj.png'))
+            if self.pr:
+                res.save('image_neuro_obj_pr.png')
+                self.canvas_7.setPixmap(QPixmap('image_neuro_obj_pr.png'))
+            else:
+                res.save('image_neuro_obj.png')
+                self.canvas_7.setPixmap(QPixmap('image_neuro_obj.png'))
         else:
-            res.save('image_neuro_def.png')
-            self.canvas_8.setPixmap(QPixmap('image_neuro_def.png'))
+            if self.pr:
+                res.save('image_neuro_def_pr.png')
+                self.canvas_8.setPixmap(QPixmap('image_neuro_def_pr.png'))
+            else:
+                res.save('image_neuro_def.png')
+                self.canvas_8.setPixmap(QPixmap('image_neuro_def.png'))
 
     def copy_objects(self):
-        ex.paste_objects()
+        ex.paste_objects(self.pr)
 
     def copy_defects(self):
-        ex.paste_defects()
+        ex.paste_defects(self.pr)
 
     def count_overlap(self):
         '''objects, defects = self.get_result(to_view=False)
@@ -311,8 +333,12 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
         if event.type() == QEvent.WindowActivate:
             pass
         elif event.type() == QEvent.Close:
-            os.remove('image_neuro_obj.png')
-            os.remove('image_neuro_def.png')
+            if self.pr:
+                os.remove('image_neuro_obj_pr.png')
+                os.remove('image_neuro_def_pr.png')
+            else:
+                os.remove('image_neuro_obj.png')
+                os.remove('image_neuro_def.png')
         return QMainWindow.event(self, event)
 
 
