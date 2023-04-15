@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QPixmap
 from PyQt5.QtCore import Qt, QRectF, QSizeF, QEvent
-from pyui.test_4 import Ui_MainWindow
+from pyui.test_5 import Ui_MainWindow
 from pyui.neuro_1 import Ui_MainWindow_n
+from pyui.levels import Ui_MainWindow_l
 from PIL import Image
 from Unet import *
 from Pspnet import *
@@ -83,15 +84,21 @@ class App(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.have_photo = None
+        self.have_pr = None
         self.type_of_f = ''
 
         self.draw_objects = Drawing(QColor(0, 128, 0))
         self.draw_def = Drawing(QColor(0, 128, 0))
+        self.draw_objects_pr = Drawing(QColor(0, 128, 0))
+        self.draw_def_pr = Drawing(QColor(0, 128, 0))
 
         self.pushButton_3.clicked.connect(self.save_images)
         self.pushButton.clicked.connect(self.clear_objects)
         self.pushButton_2.clicked.connect(self.clear_defects)
+        self.pushButton_8.clicked.connect(self.clear_objects_pr)
+        self.pushButton_9.clicked.connect(self.clear_defects_pr)
         self.pushButton_30.clicked.connect(self.upload_photo)
+        self.pushButton_31.clicked.connect(self.choose_task)
         self.pushButton_4.clicked.connect(self.get_from_neuro)
 
         self.colorButton_3.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 128, 0)))
@@ -101,6 +108,13 @@ class App(QMainWindow, Ui_MainWindow):
         self.colorButton_5.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 255, 255)))
         self.colorButton_6.clicked.connect(lambda: self.draw_def.change_color(QColor(0, 128, 0)))
         self.colorButton_7.clicked.connect(lambda: self.draw_def.change_color(QColor(255, 0, 0)))
+        self.colorButton_8.clicked.connect(lambda: self.draw_objects_pr.change_color(QColor(0, 128, 0)))
+        self.colorButton_9.clicked.connect(lambda: self.draw_objects_pr.change_color(QColor(0, 0, 255)))
+        self.colorButton_10.clicked.connect(lambda: self.draw_objects_pr.change_color(QColor(255, 255, 0)))
+        self.colorButton_11.clicked.connect(lambda: self.draw_objects_pr.change_color(QColor(0, 0, 0)))
+        self.colorButton_12.clicked.connect(lambda: self.draw_objects_pr.change_color(QColor(0, 255, 255)))
+        self.colorButton_13.clicked.connect(lambda: self.draw_def_pr.change_color(QColor(0, 128, 0)))
+        self.colorButton_14.clicked.connect(lambda: self.draw_def_pr.change_color(QColor(255, 0, 0)))
 
     def clear_objects(self):
         if self.have_photo:
@@ -120,6 +134,24 @@ class App(QMainWindow, Ui_MainWindow):
             self.draw_def = Drawing(QColor(0, 128, 0))
             self.gridLayout_2.addWidget(self.draw_def)
 
+    def clear_objects_pr(self):
+        if self.have_photo:
+            while self.gridLayout_8.count():
+                child = self.gridLayout_8.takeAt(0)
+                if child.widget():
+                    child.widget().deleteLater()
+            self.draw_objects_pr = Drawing(QColor(0, 128, 0))
+            self.gridLayout_8.addWidget(self.draw_objects_pr)
+
+    def clear_defects_pr(self):
+        if self.have_photo:
+            while self.gridLayout_3.count():
+                child = self.gridLayout_3.takeAt(0)
+                if child.widget():
+                    child.widget().deleteLater()
+            self.draw_def_pr = Drawing(QColor(0, 128, 0))
+            self.gridLayout_3.addWidget(self.draw_def_pr)
+
     def upload_photo(self):
         try:
             filename = QFileDialog.getOpenFileNames(self, "Выбрать изображение", "",
@@ -130,6 +162,21 @@ class App(QMainWindow, Ui_MainWindow):
             self.gridLayout_4.addWidget(self.draw_objects)
             self.gridLayout_2.addWidget(self.draw_def)
             self.canvas_8.setPixmap(QPixmap('image_start.png'))
+        except Exception as E:
+            pass
+
+    def choose_task(self):
+        self.levels = Levels()
+        self.levels.show()
+
+    def apply_task(self, level: int):
+        try:
+            image = Image.open(f'tasks/{level}/photo.jpg').resize((1024, 64))
+            image.save('image_start_pr.png')
+            self.have_pr = level
+            self.gridLayout_8.addWidget(self.draw_objects_pr)
+            self.gridLayout_3.addWidget(self.draw_def_pr)
+            self.canvas_6.setPixmap(QPixmap('image_start_pr.png'))
         except Exception as E:
             pass
 
@@ -171,6 +218,8 @@ class App(QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         if self.have_photo:
             os.remove('image_start.png')
+        if self.have_pr:
+            os.remove('image_start_pr.png')
         if self.type_of_f:
             os.remove(f'objects_1.{self.type_of_f}')
             os.remove(f'defects_1.{self.type_of_f}')
@@ -265,6 +314,22 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
             os.remove('image_neuro_obj.png')
             os.remove('image_neuro_def.png')
         return QMainWindow.event(self, event)
+
+
+class Levels(QMainWindow, Ui_MainWindow_l):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+        self.pushButton.clicked.connect(lambda: self.choose_level(1))
+        self.pushButton_2.clicked.connect(lambda: self.choose_level(2))
+        self.pushButton_3.clicked.connect(lambda: self.choose_level(3))
+        self.pushButton_4.clicked.connect(lambda: self.choose_level(4))
+        self.pushButton_5.clicked.connect(lambda: self.choose_level(5))
+
+    def choose_level(self, level: int):
+        ex.apply_task(level)
+        self.close()
 
 
 def except_hook(cls, exception, traceback):
