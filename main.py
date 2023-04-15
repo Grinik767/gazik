@@ -4,12 +4,14 @@ from PyQt5.QtCore import Qt, QRectF, QSizeF, QEvent
 from pyui.test_5 import Ui_MainWindow
 from pyui.neuro_1 import Ui_MainWindow_n
 from pyui.levels import Ui_MainWindow_l
+from sklearn.metrics import f1_score
 from PIL import Image
 from Unet import *
 from Pspnet import *
 from funcs import *
 import sys
 import os
+import pickle
 
 
 class Drawing(QWidget):
@@ -93,6 +95,7 @@ class App(QMainWindow, Ui_MainWindow):
         self.draw_def_pr = Drawing(QColor(0, 128, 0))
 
         self.pushButton_3.clicked.connect(self.save_images)
+        self.pushButton_10.clicked.connect(self.get_result)
         self.pushButton.clicked.connect(self.clear_objects)
         self.pushButton_2.clicked.connect(self.clear_defects)
         self.pushButton_8.clicked.connect(self.clear_objects_pr)
@@ -203,6 +206,45 @@ class App(QMainWindow, Ui_MainWindow):
                 new_image.show()
             except Exception as e:
                 pass
+
+    def get_result(self):
+        if self.have_pr:
+            with open(f'tasks/{self.have_pr}/res.pkl', 'rb') as f:
+                res_obj, res_def = pickle.load(f)
+            img_st = image.load_img('image_start_pr.png', target_size=(img_height // 8, img_width // 8))
+            self.draw_objects_pr.save_as_image('to_metric_obj.png')
+            self.draw_def_pr.save_as_image('to_metric_def.png')
+            img_dr_obj = yt_prep([image.load_img('to_metric_obj.png', target_size=(img_height // 8, img_width // 8))],
+                                 num_classes).reshape(-1, num_classes)
+            img_dr_def = yt_prep_def(
+                [image.load_img('to_metric_def.png', target_size=(img_height // 8, img_width // 8))],
+                num_classes_def).reshape(-1, num_classes_def)
+            neuro = Neuro(img_st, pr=True)
+            obj_pred, def_pred = neuro.get_result(to_view=False)
+            pr1, pr2, pr3, pr4 = [], [], [], []
+            for k in range(len(obj_pred)):
+                pr1.append(np.argmax(obj_pred[k]))
+                pr2.append(np.argmax(def_pred[k]))
+                pr3.append(np.argmax(img_dr_obj[k]))
+                pr4.append(np.argmax(img_dr_def[k]))
+            obj_pred = np.array(pr1.copy()).reshape(img_height // 8, img_width // 8)
+            def_pred = np.array(pr2.copy()).reshape(img_height // 8, img_width // 8)
+            obj_dr = np.array(pr3.copy()).reshape(img_height // 8, img_width // 8)
+            def_dr = np.array(pr4.copy()).reshape(img_height // 8, img_width // 8)
+            res_obj_pred, res_def_pred, res_obj_dr, res_def_dr = [], [], [], []
+            for i in range(img_width // 8):
+                res_obj_pred += ([np.argmax(np.bincount(obj_pred[:, i]))] * 8)
+                res_def_pred += ([np.argmax(np.bincount(def_pred[:, i]))] * 8)
+                res_obj_dr += ([np.argmax(np.bincount(obj_dr[:, i]))] * 8)
+                res_def_dr += ([np.argmax(np.bincount(def_dr[:, i]))] * 8)
+            f_el_n = f1_score(res_obj, res_obj_pred, average='weighted')
+            f_def_n = f1_score(res_def, res_def_pred, average='weighted')
+            q_n = (f_el_n + 2 * f_def_n) / 3
+
+            f_el_dr = f1_score(res_obj, res_obj_dr, average='weighted')
+            f_def_dr = f1_score(res_def, res_def_dr, average='weighted')
+            q_dr = (f_el_dr + 2 * f_def_dr) / 3
+            print(q_dr, q_n)
 
     def get_from_neuro(self):
         if self.have_photo:
