@@ -160,13 +160,14 @@ class App(QMainWindow, Ui_MainWindow):
         try:
             filename = QFileDialog.getOpenFileNames(self, "Выбрать изображение", "",
                                                     'Изображение (*.jpg *.png);')[0][0]
-            image = Image.open(filename).resize((1024, 64))
-            image.save('image_start.png')
+            image_st = Image.open(filename).resize((1024, 64))
+            image_st.save('image_start.png')
             self.have_photo = True
+            self.label_8.setText(self.count_defect_per())
+            self.canvas_8.setPixmap(QPixmap('image_start.png'))
             self.gridLayout_4.addWidget(self.draw_objects)
             self.gridLayout_2.addWidget(self.draw_def)
-            self.canvas_8.setPixmap(QPixmap('image_start.png'))
-        except Exception as E:
+        except Exception as e:
             pass
 
     def choose_task(self):
@@ -178,6 +179,7 @@ class App(QMainWindow, Ui_MainWindow):
             image = Image.open(f'tasks/{level}/photo.jpg').resize((1024, 64))
             image.save('image_start_pr.png')
             self.have_pr = level
+            self.label_10.setText(self.count_defect_per(pr=True))
             self.gridLayout_8.addWidget(self.draw_objects_pr)
             self.gridLayout_3.addWidget(self.draw_def_pr)
             self.canvas_6.setPixmap(QPixmap('image_start_pr.png'))
@@ -251,6 +253,28 @@ class App(QMainWindow, Ui_MainWindow):
             img = image.load_img('image_start.png', target_size=(img_height // 8, img_width // 8))
             self.adm = Neuro(img)
             self.adm.show()
+
+    def count_defect_per(self, pr=False):
+        if not pr:
+            self.neuro = Neuro(img=image.load_img('image_start.png', target_size=(img_height // 8, img_width // 8)),
+                               pr=False)
+        else:
+            self.neuro = Neuro(img=image.load_img('image_start_pr.png', target_size=(img_height // 8, img_width // 8)),
+                               pr=False)
+        obj, defect = self.neuro.get_result(to_view=False)
+        pr = []
+        for k in range(len(defect)):
+            pr.append(np.argmax(defect[k]))
+        obj = np.array(pr.copy()).reshape(img_height // 8, img_width // 8)
+        res = 0
+        for i in range(img_width // 8):
+            res += np.argmax(np.bincount(obj[:, i]))
+        res = int(res / 512 + 0.5)
+        if res <= 5:
+            return 'низкая'
+        elif 6 <= res <= 13:
+            return 'средняя'
+        return 'высокая'
 
     def get_from_neuro_pr(self):
         if self.have_pr:
@@ -338,38 +362,6 @@ class Neuro(QMainWindow, Ui_MainWindow_n):
 
     def copy_defects(self):
         ex.paste_defects(self.pr)
-
-    def count_overlap(self):
-        '''objects, defects = self.get_result(to_view=False)
-        objects1 = []
-        defects1 = []
-        for k in range(len(objects)):
-            objects1.append(np.argmax(objects[k]))
-            defects1.append(np.argmax(defects[k]))
-        objects, defects = np.array(objects1).reshape(img_height // 8, img_width // 8), np.array(defects1).reshape(
-            img_height // 8, img_width // 8)
-        ex.draw_objects.save_as_image('objects_1.png')
-        img_obj = yt_prep([Image.open('objects_1.png').convert('RGB').resize((1024, 64))], num_classes).reshape(-1,
-                                                                                                                num_classes)
-        res1_1 = []
-        res2_1 = []
-        for i in range(len(img_obj)):
-            res1_1.append(np.argmax(img_obj[i]))
-        res1_1 = np.array(res1_1)
-        res1_1 = res1_1.reshape(img_height // 2, img_width // 4)
-        res1 = []
-        res2 = []
-        for i in range(img_width // 8):
-            res1 += ([np.argmax(np.bincount(objects[:, i]))] * 8)
-            res2 += ([np.argmax(np.bincount(defects[:, i]))] * 8)
-        res1_2 = []
-        for i in range(img_width // 4):
-            res1_2 += ([np.argmax(np.bincount(res1_1[:, i]))] * 4)
-        k_def = 0
-        for i in range(img_width):
-            if res1[i] == res1_2[i]:
-                k_def += 1
-        print(k_def / 4096 * 100)'''
 
     def event(self, event):
         if event.type() == QEvent.WindowActivate:
