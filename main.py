@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt, QRectF, QSizeF, QEvent
 from pyui.test_5 import Ui_MainWindow
 from pyui.neuro_1 import Ui_MainWindow_n
 from pyui.levels import Ui_MainWindow_l
+from pyui.result_1 import Ui_MainWindow_r
 from sklearn.metrics import f1_score
 from PIL import Image
 from Unet import *
@@ -246,7 +247,12 @@ class App(QMainWindow, Ui_MainWindow):
             f_el_dr = f1_score(res_obj, res_obj_dr, average='weighted')
             f_def_dr = f1_score(res_def, res_def_dr, average='weighted')
             q_dr = (f_el_dr + 2 * f_def_dr) / 3
-            print(q_dr, q_n)
+
+            neuro.get_result(to_view=True)
+            self.obj = Result('object', f_el_dr * 100, f_el_n * 100, 'to_metric_obj.png', 'image_neuro_obj_pr.png')
+            self.obj.show()
+            self.defect = Result('defect', f_def_dr * 100, f_def_dr * 100, 'to_metric_def.png', 'image_neuro_def_pr.png')
+            self.defect.show()
 
     def get_from_neuro(self):
         if self.have_photo:
@@ -390,6 +396,20 @@ class Levels(QMainWindow, Ui_MainWindow_l):
     def choose_level(self, level: int):
         ex.apply_task(level)
         self.close()
+
+
+class Result(QMainWindow, Ui_MainWindow_r):
+    def __init__(self, t, c1, c2, i1, i2):
+        super().__init__()
+        self.setupUi(self)
+        if t == 'object':
+            self.label.setText("Объекты")
+        else:
+            self.label.setText("Дефекты")
+        self.label_5.setText(str(c1))
+        self.label_7.setText(str(c2))
+        self.canvas_3.setPixmap(QPixmap(i1))
+        self.canvas_4.setPixmap(QPixmap(i2))
 
 
 def except_hook(cls, exception, traceback):
