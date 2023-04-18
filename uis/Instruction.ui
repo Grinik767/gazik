@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>650</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>480</width>
+    <height>650</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Инструкция</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>52</x>
+      <y>10</y>
+      <width>421</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Инструкция по работе с приложением</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="plainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>13</x>
+      <y>56</y>
+      <width>452</width>
+      <height>572</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>452</width>
+      <height>572</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>452</width>
+      <height>572</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="plainText">
+     <string>1) Подготовка к работе
+    1.1) В приложении предоставлены два раздела: «Разметка объектов», «Разметка дефектов». В которых осуществляется работа с магнитограммами.
+    1.2) Для того чтобы начать размечать магнитограмму нужно выбрать изображение, с которым вы будете работать. Для этого нажмите на кнопку &quot;выбрать файл&quot; и выберите файл с магнитограммой.
+2) Работа с разметкой магнитограмм
+    2.1) После появления не размеченной магнитограммы, вы можете приступить к разметке. В разделе &quot;разметка объектов&quot; выберите тип элемента и нанесите его на поле разметки. В разделе &quot;разметка дефектов&quot; отметьте дефекты на поле разметки. ВАЖНО: выделяйте объекты прямоугольниками от верхнего до нижнего края.
+    2.2) В случае неверного выделения в поле для внесения разметки нажмите на кнопку &quot;очистить поле для объектов&quot; или &quot;очистить поле для дефектов&quot; соответственно.
+    2.3) Если возникнут трудности с разметкой или нужно будет проверить свою работу, вы можете воспользоваться функцией &quot;Получить ответ от нейронной сети&quot;, ответ появиться в отдельном окне.
+	2.3.1) В окне появится разметка сделанная вами и разметка, которую выполнила нейронная сеть. Вы сможете рассмотреть различия в разметке магнитограммы и узнать точность разметки (в процентах) вашей работы и точность разметки (в процентах) нейронной сети, а также общую точность на объектах и дефектах (в процентах).
+    2.4) После завершения работы нажмите кнопку &quot;Сохранить изображения&quot;(Для раздела «Разметка новых магнитограмм»).
+</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

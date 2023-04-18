@@ -5,6 +5,7 @@ from pyui.test_5 import Ui_MainWindow
 from pyui.neuro_1 import Ui_MainWindow_n
 from pyui.levels import Ui_MainWindow_l
 from pyui.result_1 import Ui_MainWindow_r
+from pyui.Instruction import Ui_MainWindow_i
 from sklearn.metrics import f1_score
 from PIL import Image
 from Unet import *
@@ -95,6 +96,8 @@ class App(QMainWindow, Ui_MainWindow):
         self.draw_objects_pr = Drawing(QColor(0, 128, 0))
         self.draw_def_pr = Drawing(QColor(0, 128, 0))
 
+        self.instruct = Instruction()
+
         self.pushButton_3.clicked.connect(self.save_images)
         self.pushButton_10.clicked.connect(self.get_result)
         self.pushButton.clicked.connect(self.clear_objects)
@@ -105,6 +108,8 @@ class App(QMainWindow, Ui_MainWindow):
         self.pushButton_31.clicked.connect(self.choose_task)
         self.pushButton_4.clicked.connect(self.get_from_neuro)
         self.pushButton_11.clicked.connect(self.get_from_neuro_pr)
+        self.pushButton_32.clicked.connect(lambda: self.instruct.show())
+        self.pushButton_33.clicked.connect(lambda: self.instruct.show())
 
         self.colorButton_3.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 128, 0)))
         self.colorButton_2.clicked.connect(lambda: self.draw_objects.change_color(QColor(0, 0, 255)))
@@ -247,7 +252,6 @@ class App(QMainWindow, Ui_MainWindow):
             f_el_dr = f1_score(res_obj, res_obj_dr, average='weighted')
             f_def_dr = f1_score(res_def, res_def_dr, average='weighted')
             q_dr = (f_el_dr + 2 * f_def_dr) / 3
-
             neuro.get_result(to_view=True)
             self.obj = Result('object', okrugl(f_el_dr * 100), okrugl(f_el_n * 100), okrugl(q_dr * 100),
                               okrugl(q_n * 100),
@@ -259,6 +263,10 @@ class App(QMainWindow, Ui_MainWindow):
                                  'to_metric_def.png',
                                  'image_neuro_def_pr.png')
             self.defect.show()
+            os.remove('to_metric_obj.png')
+            os.remove('to_metric_def.png')
+            os.remove('image_neuro_obj_pr.png')
+            os.remove('image_neuro_def_pr.png')
 
     def get_from_neuro(self):
         if self.have_photo:
@@ -418,6 +426,12 @@ class Result(QMainWindow, Ui_MainWindow_r):
         self.label_11.setText(f"{c4}%")
         self.canvas_3.setPixmap(QPixmap(i1))
         self.canvas_4.setPixmap(QPixmap(i2))
+
+
+class Instruction(QMainWindow, Ui_MainWindow_i):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
 
 def except_hook(cls, exception, traceback):
