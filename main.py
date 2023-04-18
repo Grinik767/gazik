@@ -249,9 +249,15 @@ class App(QMainWindow, Ui_MainWindow):
             q_dr = (f_el_dr + 2 * f_def_dr) / 3
 
             neuro.get_result(to_view=True)
-            self.obj = Result('object', f_el_dr * 100, f_el_n * 100, 'to_metric_obj.png', 'image_neuro_obj_pr.png')
+            self.obj = Result('object', okrugl(f_el_dr * 100), okrugl(f_el_n * 100), okrugl(q_dr * 100),
+                              okrugl(q_n * 100),
+                              'to_metric_obj.png',
+                              'image_neuro_obj_pr.png')
             self.obj.show()
-            self.defect = Result('defect', f_def_dr * 100, f_def_dr * 100, 'to_metric_def.png', 'image_neuro_def_pr.png')
+            self.defect = Result('defect', okrugl(f_def_dr * 100), okrugl(f_def_n * 100), okrugl(q_dr * 100),
+                                 okrugl(q_n * 100),
+                                 'to_metric_def.png',
+                                 'image_neuro_def_pr.png')
             self.defect.show()
 
     def get_from_neuro(self):
@@ -275,7 +281,7 @@ class App(QMainWindow, Ui_MainWindow):
         res = 0
         for i in range(img_width // 8):
             res += np.argmax(np.bincount(obj[:, i]))
-        res = int(res / 512 + 0.5)
+        res = okrugl(res / 512)
         if res <= 5:
             return 'низкая'
         elif 6 <= res <= 13:
@@ -399,15 +405,17 @@ class Levels(QMainWindow, Ui_MainWindow_l):
 
 
 class Result(QMainWindow, Ui_MainWindow_r):
-    def __init__(self, t, c1, c2, i1, i2):
+    def __init__(self, t, c1, c2, c3, c4, i1, i2):
         super().__init__()
         self.setupUi(self)
         if t == 'object':
             self.label.setText("Объекты")
         else:
             self.label.setText("Дефекты")
-        self.label_5.setText(str(c1))
-        self.label_7.setText(str(c2))
+        self.label_5.setText(f"{c1}%")
+        self.label_7.setText(f"{c2}%")
+        self.label_9.setText(f"{c3}%")
+        self.label_11.setText(f"{c4}%")
         self.canvas_3.setPixmap(QPixmap(i1))
         self.canvas_4.setPixmap(QPixmap(i2))
 

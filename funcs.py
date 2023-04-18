@@ -8,6 +8,10 @@ num_classes = 5
 num_classes_def = 2
 
 
+def okrugl(x):
+    return int(x + 0.5)
+
+
 def color2index(color):
     index = -1
     if 0 <= color[0] <= 50 and 100 <= color[1] <= 159 and 0 <= color[2] <= 50:
