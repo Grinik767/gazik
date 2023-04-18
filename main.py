@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor, QPixmap
 from PyQt5.QtCore import Qt, QRectF, QSizeF, QEvent
-from pyui.test_5 import Ui_MainWindow
-from pyui.neuro_1 import Ui_MainWindow_n
+from pyui.design_3 import Ui_MainWindow
+from pyui.neuro_2 import Ui_MainWindow_n
 from pyui.levels import Ui_MainWindow_l
 from pyui.result_1 import Ui_MainWindow_r
 from pyui.Instruction import Ui_MainWindow_i

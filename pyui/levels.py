@@ -116,10 +116,12 @@ class Ui_MainWindow_l(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Выбор уровня сложности"))
         self.label_2.setText(_translate("MainWindow", "Выберите сложность"))
         self.label.setText(_translate("MainWindow", "Уровень 1"))
         self.label_3.setText(_translate("MainWindow", "Уровень 2"))
         self.label_4.setText(_translate("MainWindow", "Уровень 3"))
         self.label_5.setText(_translate("MainWindow", "Уровень 4"))
         self.label_6.setText(_translate("MainWindow", "Уровень 5"))
+
+

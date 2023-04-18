@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Главная</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -71,7 +71,7 @@
         <x>310</x>
         <y>10</y>
         <width>441</width>
-        <height>20</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -89,10 +89,10 @@
      <widget class="QPushButton" name="pushButton_30">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>40</y>
-        <width>131</width>
-        <height>24</height>
+        <x>49</x>
+        <y>31</y>
+        <width>151</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -131,9 +131,9 @@
      <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>70</x>
         <y>238</y>
-        <width>791</width>
+        <width>821</width>
         <height>51</height>
        </rect>
       </property>
@@ -456,9 +456,9 @@
      <widget class="QWidget" name="horizontalLayoutWidget_3">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>576</y>
-        <width>867</width>
+        <x>90</x>
+        <y>589</y>
+        <width>911</width>
         <height>71</height>
        </rect>
       </property>
@@ -468,12 +468,6 @@
        </property>
        <item>
         <widget class="QPushButton" name="pushButton">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>27</height>
-          </size>
-         </property>
          <property name="text">
           <string>Очистить поле для объектов</string>
          </property>
@@ -499,9 +493,9 @@
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>210</y>
+        <y>209</y>
         <width>441</width>
-        <height>20</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -520,9 +514,9 @@
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>400</y>
+        <y>394</y>
         <width>441</width>
-        <height>20</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -540,10 +534,10 @@
      <widget class="QPushButton" name="pushButton_4">
       <property name="geometry">
        <rect>
-        <x>680</x>
+        <x>620</x>
         <y>50</y>
-        <width>331</width>
-        <height>24</height>
+        <width>391</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -708,6 +702,27 @@
        </item>
       </layout>
      </widget>
+     <widget class="QPushButton" name="pushButton_32">
+      <property name="geometry">
+       <rect>
+        <x>910</x>
+        <y>10</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Инструкция</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <property name="enabled">
@@ -722,7 +737,7 @@
         <x>310</x>
         <y>10</y>
         <width>441</width>
-        <height>20</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -741,9 +756,9 @@
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>40</y>
-        <width>141</width>
-        <height>24</height>
+        <y>31</y>
+        <width>161</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -808,9 +823,9 @@
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>210</y>
+        <y>209</y>
         <width>441</width>
-        <height>20</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -828,9 +843,9 @@
      <widget class="QWidget" name="horizontalLayoutWidget_4">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>576</y>
-        <width>833</width>
+        <x>90</x>
+        <y>589</y>
+        <width>911</width>
         <height>71</height>
        </rect>
       </property>
@@ -840,12 +855,6 @@
        </property>
        <item>
         <widget class="QPushButton" name="pushButton_8">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>27</height>
-          </size>
-         </property>
          <property name="text">
           <string>Очистить поле для объектов</string>
          </property>
@@ -895,10 +904,10 @@
      <widget class="QPushButton" name="pushButton_11">
       <property name="geometry">
        <rect>
-        <x>680</x>
+        <x>620</x>
         <y>50</y>
-        <width>331</width>
-        <height>27</height>
+        <width>391</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -934,9 +943,9 @@
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>400</y>
+        <y>394</y>
         <width>441</width>
-        <height>20</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -954,9 +963,9 @@
      <widget class="QWidget" name="horizontalLayoutWidget_7">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>70</x>
         <y>238</y>
-        <width>791</width>
+        <width>821</width>
         <height>51</height>
        </rect>
       </property>
@@ -1358,6 +1367,27 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QPushButton" name="pushButton_33">
+      <property name="geometry">
+       <rect>
+        <x>910</x>
+        <y>10</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Инструкция</string>
+      </property>
      </widget>
     </widget>
    </widget>
