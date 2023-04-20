@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Выбор задания</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label_2">
@@ -44,7 +44,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Выберите сложность</string>
+     <string>Выберите задание</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -136,7 +136,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Уровень 1</string>
+        <string>Задание 1</string>
        </property>
       </widget>
      </item>
@@ -151,7 +151,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Уровень 2</string>
+        <string>Задание 2</string>
        </property>
       </widget>
      </item>
@@ -166,7 +166,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Уровень 3</string>
+        <string>Задание 3</string>
        </property>
       </widget>
      </item>
@@ -193,7 +193,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Уровень 4</string>
+        <string>Задание 4</string>
        </property>
       </widget>
      </item>
@@ -208,7 +208,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Уровень 5</string>
+        <string>Задание 5</string>
        </property>
       </widget>
      </item>
